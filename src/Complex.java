@@ -1,4 +1,4 @@
-public class Complex {
+public final class Complex {
     private double Realpart;
     private double ImaginaryPart;
 
@@ -6,9 +6,16 @@ public class Complex {
     //                   Constructor
     //--------------------------------------------------------------
 
-    Complex(double pR, double pM){
-        Realpart = pR;
-        ImaginaryPart = pM;
+    private Complex(double Re, double Im){
+        Realpart = Re;
+        ImaginaryPart = Im;
+    }
+
+    //--------------------------------------------------------------
+    //                  Static fabric
+    //--------------------------------------------------------------
+    public static Complex of(double Re, double Im) {
+        return new Complex(Re, Im);
     }
 
     //--------------------------------------------------------------
@@ -57,18 +64,33 @@ public class Complex {
     }
 
     public Complex multiply(Complex m){
-        double re = this.ImaginaryPart*m.Realpart + m.ImaginaryPart*this.Realpart;
-        double im = this.ImaginaryPart*this.Realpart - m.ImaginaryPart*m.Realpart;
+        double re = this.Realpart*m.Realpart - this.ImaginaryPart*m.ImaginaryPart;
+        double im = this.Realpart*m.ImaginaryPart + m.Realpart*this.ImaginaryPart;
         return new Complex(re,im);
     }
 
     public Complex divide(Complex n){
-        double re = (n.Realpart *this.Realpart + n.ImaginaryPart*this.ImaginaryPart)/(this.Realpart *this.Realpart + this.ImaginaryPart*this.ImaginaryPart);
-        double im = (n.Realpart *this.Realpart - n.ImaginaryPart*this.ImaginaryPart)/(this.Realpart *this.Realpart + this.ImaginaryPart*this.ImaginaryPart);
-        return new Complex(re,im);
+        Complex temp = this.multiply(n);
+        return new Complex(
+                temp.getRealpart() / (n.Realpart*n.Realpart - n.ImaginaryPart*n.ImaginaryPart),
+                temp.getImaginayPart() / (n.Realpart*n.Realpart - n.ImaginaryPart*n.ImaginaryPart)
+        );
     }
 
-    public double modulus() {
+    public Complex pow(int n) {
+        if (n < 0) {
+            throw new IllegalArgumentException("Cannot raise to a negative power");
+        }
+        if (n == 0) {
+            return new Complex(1, 0);
+        }
+        if (n == 1) {
+            return this;
+        }
+        return this.multiply(this.pow(n-1));
+    }
+
+    public double mod() {
         return Math.sqrt((Realpart * Realpart) + (ImaginaryPart * ImaginaryPart));
     }
 
