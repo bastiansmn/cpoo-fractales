@@ -18,7 +18,7 @@ public class Main {
         if (args.length != 0 && args.length != 3) {
             System.out.println(" Usage : - sans argument : génère une fractale basique en nuance de gris \n " +
                     "- <./fractale> <Nombre complexe partie réelle> <Nombre complexe partie imaginaire> <Taille fenetre>" +
-                    "<Color>\n\n" + " Fractales génériques : " +
+                    "\n\n" + " Fractales génériques : " +
                     "- réel : 0.3, imaginaire : 0.5 \n" +
                     "- réel : 0.285, imaginaire : 0.01 \n" +
                     "- réel : 0.038088, imaginaire : 0.9754633 \n" +
