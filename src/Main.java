@@ -1,4 +1,11 @@
+import fractals.FractalGenerator;
+import fractals.JuliaSet;
+import fractals.MandelbrotSet;
+import utils.*;
+
 import java.io.IOException;
+import java.util.List;
+
 import static java.lang.Integer.parseInt;
 import static java.lang.System.exit;
 
@@ -10,6 +17,11 @@ public class Main {
     private final static Complex c4 = Complex.of(.285, .013);
     private final static Complex c5 = Complex.of(.285, .01);
     private final static Complex c6 = Complex.of(-1.476, .0);
+
+    private final static Polynomial p = new Polynomial(List.of(
+            new Monome(Complex.of(1, 0), 2),
+            new Monome(c1, 0)
+    ));
 
     public static void main(String[] args){
         double re = 0.0;
@@ -27,14 +39,20 @@ public class Main {
             exit(0);
         }
         if (args.length == 0) {
-            FractalGenerator gen = new FractalGenerator(
-                    (Complex z) -> {
-                        // Equivalent à :
-                        // f(z) = c + z^2 où on choisis c parmi les constantes définies ci dessus
-                        return c1.add(z.pow(2));
-                    },
-                    500
+            FractalGenerator gen = new JuliaSet(
+                    ComplexFunction.parse(p),
+                    2.5,
+                    500,
+                    new Interval(0, 360)
             );
+//            FractalGenerator gen = new MandelbrotSet(
+//                    (Complex z, Double x, Double y) -> {
+//                        return Complex.of(x, y).add(z.pow(2));
+//                    },
+//                    2,
+//                    500,
+//                    new Interval(0, 360)
+//            );
             try {
                 gen.fill().render("fractal.png");
             } catch (IOException ignore) {
@@ -59,13 +77,13 @@ public class Main {
                         " Remplacez les 0 par des valeurs pour avoir la taille de l'écran en pixel");
             }
             Complex c = Complex.of(re, im);
-            FractalGenerator gen = new FractalGenerator(
+            FractalGenerator gen = new JuliaSet(
                     (Complex z) -> {
-                        // Equivalent à :
-                        // f(z) = c + z^2 où on choisis c parmi les constantes définies ci dessus
                         return c.add(z.pow(2));
                     },
-                    size
+                    2,
+                    500,
+                    new Interval(0, 360)
             );
             try {
                 gen.fill().render("fractal.png");
