@@ -1,16 +1,21 @@
 package utils;
 
 public final class Complex {
-    private double Realpart;
-    private double ImaginaryPart;
+
+    public static final Complex I = new Complex(0, 1);
+    public static final Complex ZERO = new Complex(0, 0);
+    public static final Complex ONE = new Complex(1, 0);
+
+    private final double re;
+    private final double im;
 
     //--------------------------------------------------------------
     //                   Constructor
     //--------------------------------------------------------------
 
     private Complex(double Re, double Im){
-        Realpart = Re;
-        ImaginaryPart = Im;
+        re = Re;
+        im = Im;
     }
 
     //--------------------------------------------------------------
@@ -24,21 +29,14 @@ public final class Complex {
     //                    Getters
     //--------------------------------------------------------------
 
-    public double getRealpart() {
-        return Realpart;
+    public double getRe() {
+        return re;
     }
 
-    public double getImaginayPart() {
-        return ImaginaryPart;
+    public double getIm() {
+        return im;
     }
 
-    public Complex getZero(){
-        return new Complex(0.0,0.0);
-    }
-
-    public Complex getI(){
-        return new Complex(0.0, 1.0);
-    }
 
     //--------------------------------------------------------------
     //                    Display
@@ -46,7 +44,7 @@ public final class Complex {
 
     @Override
     public String toString(){
-        return Realpart + " + " + ImaginaryPart + "i";
+        return re + " + " + im + "i";
     }
 
     //--------------------------------------------------------------
@@ -54,53 +52,51 @@ public final class Complex {
     //--------------------------------------------------------------
 
     public Complex add(Complex m ){
-        double re = this.Realpart + m.Realpart;
-        double im = this.ImaginaryPart + m.ImaginaryPart;
+        double re = this.re + m.re;
+        double im = this.im + m.im;
         return new Complex(re,im);
     }
 
-    public Complex subtract(Complex m ){
-        double re = this.Realpart - m.Realpart;
-        double im = this.ImaginaryPart - m.ImaginaryPart;
+    public Complex sub(Complex m ){
+        double re = this.re - m.re;
+        double im = this.im - m.im;
         return new Complex(re,im);
     }
 
-    public Complex multiply(Complex m){
-        double re = this.Realpart*m.Realpart - this.ImaginaryPart*m.ImaginaryPart;
-        double im = this.Realpart*m.ImaginaryPart + m.Realpart*this.ImaginaryPart;
+    public Complex mult(Complex m){
+        double re = this.re *m.re - this.im *m.im;
+        double im = this.re *m.im + m.re *this.im;
         return new Complex(re,im);
     }
 
-    public Complex divide(Complex n){
-        Complex temp = this.multiply(n);
+    public Complex div(Complex n){
+        Complex temp = this.mult(n);
+        double v = n.re * n.re - n.im * n.im;
         return new Complex(
-                temp.getRealpart() / (n.Realpart*n.Realpart - n.ImaginaryPart*n.ImaginaryPart),
-                temp.getImaginayPart() / (n.Realpart*n.Realpart - n.ImaginaryPart*n.ImaginaryPart)
+                temp.getRe() / v,
+                temp.getIm() / v
         );
     }
 
     public Complex pow(int n) {
-        if (n < 0) {
+        if (n < 0)
             throw new IllegalArgumentException("Cannot raise to a negative power");
-        }
-        if (n == 0) {
-            return new Complex(1, 0);
-        }
-        if (n == 1) {
+        if (n == 0)
+            return ONE;
+        if (n == 1)
             return this;
-        }
-        return this.multiply(this.pow(n-1));
+        return this.mult(this.pow(n-1));
     }
 
     public double mod() {
-        return Math.sqrt((Realpart * Realpart) + (ImaginaryPart * ImaginaryPart));
+        return Math.sqrt((re * re) + (im * im));
     }
 
-    public Complex conjugue() {
-        return new Complex(Realpart, -ImaginaryPart);
+    public Complex conj() {
+        return new Complex(re, -im);
     }
 
     public boolean equals (Complex n){
-        return n == this;
+        return n.getIm() == this.getIm() && n.getRe() == this.getRe();
     }
 }

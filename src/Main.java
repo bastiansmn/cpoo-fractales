@@ -4,7 +4,6 @@ import fractals.MandelbrotSet;
 import utils.*;
 
 import java.io.IOException;
-import java.util.List;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.System.exit;
@@ -15,34 +14,31 @@ public class Main {
     private final static Complex c2 = Complex.of(.285, .01);
     private final static Complex c3 = Complex.of(.038088, .9754633);
     private final static Complex c4 = Complex.of(.285, .013);
-    private final static Complex c5 = Complex.of(.285, .01);
-    private final static Complex c6 = Complex.of(-1.476, .0);
-
-    private final static Polynomial p = new Polynomial(List.of(
-            new Monome(Complex.of(1, 0), 2),
-            new Monome(c1, 0)
-    ));
+    private final static Complex c5 = Complex.of(-1.476, .0);
+    private final static Complex c6 = Complex.of(-0.7269, 0.1889);
 
     public static void main(String[] args){
         double re = 0.0;
         double im = 0.0;
         int size = 500;
         if (args.length != 0 && args.length != 3) {
-            System.out.println(" Usage : - sans argument : génère une fractale basique en nuance de gris \n " +
-                    "- <./fractale> <Nombre complexe partie réelle> <Nombre complexe partie imaginaire> <Taille fenetre>" +
-                    "\n\n" + " Fractales génériques : " +
-                    "- réel : 0.3, imaginaire : 0.5 \n" +
-                    "- réel : 0.285, imaginaire : 0.01 \n" +
-                    "- réel : 0.038088, imaginaire : 0.9754633 \n" +
-                    "- réel : 0.285, imaginaire : 0.013 \n" +
-                    "- réel : -1.476, imaginaire : 0.0 \n");
+            System.out.println("""
+                     Usage : - sans argument : génère une fractale basique en nuance de gris\s
+                     - <./fractale> <Nombre complexe partie réelle> <Nombre complexe partie imaginaire> <Taille fenetre>
+
+                     Fractales génériques : - réel : 0.3, imaginaire : 0.5\s
+                    - réel : 0.285, imaginaire : 0.01\s
+                    - réel : 0.038088, imaginaire : 0.9754633\s
+                    - réel : 0.285, imaginaire : 0.013\s
+                    - réel : -1.476, imaginaire : 0.0\s
+                    """);
             exit(0);
         }
         if (args.length == 0) {
             FractalGenerator gen = new JuliaSet(
-                    ComplexFunction.parse(p),
+                    (Complex z) -> c2.add(z.pow(2)),
                     2.5,
-                    500,
+                    1000,
                     new Interval(0, 360)
             );
 //            FractalGenerator gen = new MandelbrotSet(
@@ -50,7 +46,7 @@ public class Main {
 //                        return Complex.of(x, y).add(z.pow(2));
 //                    },
 //                    2,
-//                    500,
+//                    2000,
 //                    new Interval(0, 360)
 //            );
             try {
@@ -78,12 +74,10 @@ public class Main {
             }
             Complex c = Complex.of(re, im);
             FractalGenerator gen = new JuliaSet(
-                    (Complex z) -> {
-                        return c.add(z.pow(2));
-                    },
+                    (Complex z) -> c.add(z.pow(2)),
                     2,
                     500,
-                    new Interval(0, 360)
+                    new Interval(140, 300)
             );
             try {
                 gen.fill().render("fractal.png");

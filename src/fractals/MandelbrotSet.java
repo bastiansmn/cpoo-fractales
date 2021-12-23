@@ -1,7 +1,6 @@
 package fractals;
 
 import utils.Complex;
-import utils.ComplexFunction;
 import utils.ComplexTriFunction;
 import utils.Interval;
 
@@ -23,8 +22,8 @@ public class MandelbrotSet extends FractalGenerator {
     protected int divergenceIndex(Complex z0) {
         int ite = 0;
         Complex zn = z0;
-        Double re = z0.getRealpart();
-        Double im = z0.getImaginayPart();
+        Double re = z0.getRe();
+        Double im = z0.getIm();
         while (ite < MAX_ITER-1 && zn.mod() <= RADIUS) {
             zn = function.apply(zn, re, im);
             ite++;
