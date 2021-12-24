@@ -1,25 +1,40 @@
 package fractals;
 
-import utils.Complex;
-import utils.ComplexFunction;
+import utils.complex.Complex;
+import utils.complex.ComplexFunction;
 import utils.Interval;
+
+import java.util.Properties;
 
 public class JuliaSet extends FractalGenerator{
 
     private ComplexFunction function;
+    private final Complex c;
 
-    // Default constructor, using super, can't be called externally
-    private JuliaSet(double framesize, int size, Interval colorRange) {
-        super(framesize, size, colorRange);
-    }
-
-    public JuliaSet(ComplexFunction function, double framesize, int size, Interval colorRange) {
-        this(framesize, size, colorRange);
+    public JuliaSet(ComplexFunction function, Complex c, double framesize, int size, Interval colorRange, double minBrightness) {
+        super(framesize, size, colorRange, minBrightness);
         this.function = function;
+        this.c = c;
     }
 
-    public JuliaSet(ComplexFunction function, double framesize, int size) {
-        this(function, framesize, size, new Interval(0, 360));
+    public JuliaSet(ComplexFunction function, Complex c,double framesize, int size, Interval colorRange) {
+        this(function, c, framesize, size, colorRange, .0);
+    }
+
+    public JuliaSet(ComplexFunction function, Complex c, double framesize, int size) {
+        this(function, c, framesize, size, new Interval(0, 360));
+    }
+
+    public JuliaSet(ComplexFunction function, Complex c, double framesize, int size, double minBrightness) {
+        this(function, c, framesize, size, new Interval(0, 360), minBrightness);
+    }
+
+    // TODO : optional args constructors
+
+    public JuliaSet(ComplexFunction function, Complex c, Properties properties) {
+        super(properties);
+        this.function = function;
+        this.c = c;
     }
 
 
@@ -32,5 +47,22 @@ public class JuliaSet extends FractalGenerator{
             ite++;
         }
         return ite;
+    }
+
+    @Override
+    protected String getInformations() {
+        return """
+               Fractal type : JuliaSet
+               Constant used : c=%s
+               Color range : %s
+               Image size : %dx%dpx
+               Square size : [%f, %f] x [%f, %f]
+               """.formatted(
+               this.c.toString(),
+               this.getColorRange().toString(),
+               this.getSize(), this.getSize(),
+               -(this.getFramesize()/2), this.getFramesize()/2,
+               -(this.getFramesize()/2), this.getFramesize()/2
+        );
     }
 }

@@ -1,4 +1,4 @@
-package utils;
+package utils.complex;
 
 public final class Complex {
 
@@ -98,5 +98,14 @@ public final class Complex {
 
     public boolean equals (Complex n){
         return n.getIm() == this.getIm() && n.getRe() == this.getRe();
+    }
+
+    public static Complex parse(String s) {
+        String[] parts = s.split("\\+");
+        double re = Double.parseDouble(parts[0]);
+        if (!parts[1].contains("i"))
+            throw new IllegalArgumentException(String.format("Number %s is not a valid Complex number.", s));
+        double im = Double.parseDouble(parts[1].replace("i", ""));
+        return Complex.of(re, im);
     }
 }

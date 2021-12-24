@@ -1,6 +1,6 @@
 package fractals;
 
-import utils.Complex;
+import utils.complex.Complex;
 import utils.Interval;
 
 import javax.imageio.ImageIO;
@@ -9,54 +9,55 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.LinkedList;
+import java.util.Properties;
 
 public abstract class FractalGenerator {
 
     protected final int MAX_ITER = 1000;
     protected final int RADIUS = 2;
 
-    // Le canvas dans lequel on dessine l'image
     private final BufferedImage canvas;
-    // La longueur du carré de dessin pour le code (ici [-1;1];[-1;1])
-    // Ce paramètre gère le zoom
+
     private final double framesize;
-    // L'image est un carré, donc la longueur
     private final int size;
-    // Le décalage horizontal
     private double horoffset = 0;
-    // Le décalage vertical
     private double veroffset = 0;
-    // La range de couleur de l'image :
     private final Interval colorRange;
 
     private int threadnum;
     private int THREADSQUARESIZE;
 
+    private final double minBrightness;
 
-    public FractalGenerator(double framesize, int size, Interval colorRange) {
+
+    protected FractalGenerator(double framesize, int size, Interval colorRange, double minBrightness) {
+        this.canvas = new BufferedImage(size, size, BufferedImage.TYPE_INT_BGR);
         this.framesize = framesize;
         this.size = size;
         this.colorRange = colorRange;
-        this.canvas = new BufferedImage(size, size, BufferedImage.TYPE_INT_BGR);
-        // On choisit 100 car c'est la valeur avec laquelle la fonction render() a la même durée d'exécution que fill() pour une image de taille 100
-        // Cela peut évidemment dépendre des PCs
-        this.THREADSQUARESIZE = this.size / 2;
-        this.threadnum = (this.size / THREADSQUARESIZE) + 1;
+        this.minBrightness = minBrightness;
     }
 
+    protected FractalGenerator(Properties properties) {
+        this.size = Math.max(0, Integer.parseInt(properties.getProperty("size", "500")));
+        this.canvas = new BufferedImage(this.size, this.size, BufferedImage.TYPE_INT_BGR);
+        this.framesize = Double.parseDouble(properties.getProperty("framesize", "2.5"));
+        this.colorRange = new Interval(
+            Math.min(360, Math.max(0, Integer.parseInt(properties.getProperty("minhue", "0")))),
+            Math.min(360, Math.max(0, Integer.parseInt(properties.getProperty("maxhue", "360"))))
+        );
+        this.minBrightness = Math.min(1, Math.max(0, Double.parseDouble(properties.getProperty("minBrightness", "0.5"))));
+        this.horoffset = Double.parseDouble(properties.getProperty("horoffset", "0"));
+        this.veroffset = -Double.parseDouble(properties.getProperty("veroffset", "0"));
+    }
 
-    // Calcul de l'index de divergence dans l'énoncé
     protected abstract int divergenceIndex(Complex z0);
 
-    // Remplie le canvas
-    // renvoie this, pour permettre les appels enchaîne
-    // (ex : gen.fill().render()
-    // On pourrait donc imaginer après :
-    // gen.fill().addAntialiasing().render()
     public FractalGenerator fill() {
         long startTime = System.currentTimeMillis();
 
         this.fillWithSquareThreads();
+        System.out.println(this.getInformations());
 
         System.out.println("fill(): " + (System.currentTimeMillis() - startTime) + "ms");
         return this;
@@ -66,10 +67,6 @@ public abstract class FractalGenerator {
         this.THREADSQUARESIZE = this.size / 10;
         this.threadnum = (this.size / THREADSQUARESIZE) + 1;
 
-        double h = framesize / (this.size);
-        double startX =  -(framesize / 2) + horoffset;
-        double startY =  -(framesize / 2) - veroffset;
-
         LinkedList<Thread> threads = new LinkedList<>();
         for (int i = 0; i < this.threadnum; i++) {
             int finalI = i;
@@ -78,19 +75,7 @@ public abstract class FractalGenerator {
                     for (int x = 0; x < this.size; x++) {
                         int ii = finalI*THREADSQUARESIZE + y;
                         if (ii < this.size) {
-                            int ind = divergenceIndex(
-                                    Complex.of(startX + x*h, startY + ii*h)
-                            );
-                            if (ind == MAX_ITER - 1) {
-                                canvas.setRGB(x, ii, 0);
-                            } else {
-                                Color color = Color.getHSBColor(
-                                        this.computeHue(ind),
-                                        1.0f,
-                                        this.computeBrightness(ind)
-                                );
-                                canvas.setRGB(x, ii, color.getRGB());
-                            }
+                            this.fillFractalForPixel(x, ii);
                         }
                     }
                 }
@@ -111,10 +96,6 @@ public abstract class FractalGenerator {
         this.THREADSQUARESIZE = this.size / 2;
         this.threadnum = (this.size / THREADSQUARESIZE) + 1;
 
-        double h = framesize / (this.size);
-        double startX =  -(framesize / 2) + horoffset;
-        double startY =  -(framesize / 2) - veroffset;
-
         LinkedList<Thread> threads = new LinkedList<>();
         for (int i = 0; i < this.threadnum; i++) {
             for (int j = 0; j < this.threadnum; j++) {
@@ -126,19 +107,7 @@ public abstract class FractalGenerator {
                             int ii = finalI * THREADSQUARESIZE + y;
                             int jj = finalJ * THREADSQUARESIZE + x;
                             if (ii < this.size && jj < this.size) {
-                                int ind = divergenceIndex(
-                                        Complex.of(startX + jj*h, startY + ii*h)
-                                );
-                                if (ind == MAX_ITER - 1) {
-                                    canvas.setRGB(jj, ii, 0);
-                                } else {
-                                    Color color = Color.getHSBColor(
-                                            this.computeHue(ind),
-                                            1.0f,
-                                            this.computeBrightness(ind)
-                                    );
-                                    canvas.setRGB(jj, ii, color.getRGB());
-                                }
+                                this.fillFractalForPixel(ii, jj);
                             }
                         }
                     }
@@ -157,33 +126,37 @@ public abstract class FractalGenerator {
     }
 
     private void fillWithoutThreads() {
-        double h = framesize / (this.size);
-        double startX =  -(framesize / 2) + horoffset;
-        double startY =  -(framesize / 2) - veroffset;
-
         for (int i = 0; i < this.size; i++) {
             for (int j = 0; j < this.size; j++) {
-                int ind = divergenceIndex(
-                        Complex.of(startX + j*h, startY + i*h)
-                );
-                // If f(z) diverge
-                if (ind == MAX_ITER - 1) {
-                    canvas.setRGB(j, i, 0);
-                } else {
-                    Color color = Color.getHSBColor(
-                            this.computeHue(ind),
-                            1.0f,
-                            this.computeBrightness(ind)
-                    );
-                    canvas.setRGB(j, i, color.getRGB());
-                }
+                fillFractalForPixel(i, j);
             }
+        }
+    }
+
+    private void fillFractalForPixel(int i, int j) {
+        double h = framesize / (this.size);
+        double startX =  -(framesize / 2) + horoffset;
+        double startY =  (framesize / 2) - veroffset;
+
+        int ind = divergenceIndex(
+                Complex.of(startX + j*h, startY + (-i)*h)
+        );
+
+        if (ind == MAX_ITER - 1) {
+            canvas.setRGB(j, i, 0);
+        } else {
+            Color color = Color.getHSBColor(
+                    this.computeHue(ind),
+                    1.0f,
+                    this.computeBrightness(ind)
+            );
+            canvas.setRGB(j, i, color.getRGB());
         }
     }
 
 
     private float computeBrightness(int ind) {
-        return (float) (Math.min(Math.sqrt(ind)/7, .55) + .45);
+        return (float) (Math.min(.1*ind, 1 - this.minBrightness) + (this.minBrightness));
     }
 
     private float computeHue(int ind) {
@@ -198,12 +171,12 @@ public abstract class FractalGenerator {
         return (float) v;
     }
 
-    // Ne renvoie pas this car fin de traitement.
-    // Se contente de créer le fichier avec le canvas.
     public void render(String filename) throws IOException {
         File f = new File(filename);
         ImageIO.write(canvas, "PNG", f);
     }
+
+    protected abstract String getInformations();
 
     // GETTERS AND SETTERS
     public BufferedImage getCanvas() {
@@ -232,6 +205,22 @@ public abstract class FractalGenerator {
 
     public int getSize() {
         return size;
+    }
+
+    public double getMinBrightness() {
+        return minBrightness;
+    }
+
+    public int getThreadnum() {
+        return threadnum;
+    }
+
+    public int getTHREADSQUARESIZE() {
+        return THREADSQUARESIZE;
+    }
+
+    public Interval getColorRange() {
+        return colorRange;
     }
 
     public void setHoroffset(double horoffset) {
