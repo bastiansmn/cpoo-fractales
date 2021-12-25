@@ -52,9 +52,7 @@ public class CLIArgsParser {
             this.alias = alias;
             this.required = required;
             this.value = value;
-            this.fallbackValue = required
-                    ? Objects.requireNonNull(fallbackValue)
-                    : fallbackValue;
+            this.fallbackValue = fallbackValue;
         }
 
         public String getAlias() {
@@ -189,7 +187,7 @@ public class CLIArgsParser {
     public String getUsage() {
         return """
                Usage :
-                  ./Fractale -c="[re]+[im]i" <-s=500> <-f=2> <-b=0.2> <-r=[100; 360]>
+                  ./Fractale -c=... <-s=...> <-f=2> <-b=0.2> <-r=[100; 360]>
                   
                   Where <...> is optional, [...] is a value you need to enter.
                """;

@@ -4,6 +4,8 @@ import fractals.MandelbrotSet;
 import utils.*;
 import utils.complex.Complex;
 
+import java.awt.*;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -22,10 +24,12 @@ public class Fractale {
     private final static Complex c8 = Complex.of(-.8, .156);
     private final static Complex c9 = Complex.of(-.4, .6);
 
+    public static boolean openFile = true;
+
     public static void main(String[] args) {
 
         CLIArgsParser cliArgsParser = new CLIArgsParser(List.of(
-                new CLIArgsParser.Option("-c", "--complex", c2),
+                new CLIArgsParser.Option("-c", "--complex", true),
                 new CLIArgsParser.Option("-s", "--size", 750),
                 new CLIArgsParser.Option("-f", "--framesize", 2.5),
                 new CLIArgsParser.Option("-b", "--minBrightness", 0.3),
@@ -33,7 +37,8 @@ public class Fractale {
                 new CLIArgsParser.Option("-p", "--properties", ""),
                 new CLIArgsParser.Option("-t", "--type", "julia"),
                 new CLIArgsParser.Option("-v", "--veroffset", .0),
-                new CLIArgsParser.Option("-h", "--horoffset", .0)
+                new CLIArgsParser.Option("-h", "--horoffset", .0),
+                new CLIArgsParser.Option("-o", "--open", "false")
         ));
         cliArgsParser.parse(args);
         LinkedHashMap<String, CLIArgsParser.Option> options = cliArgsParser.getProvidedOptions();
@@ -47,6 +52,7 @@ public class Fractale {
         String type = (String) options.get("-t").getValue();
         double horoffset = (double) options.get("-h").getValue();
         double veroffset = - (double) options.get("-v").getValue();
+        openFile = options.get("-o").getValue().equals("true");
 
         FractalGenerator gen;
         if (propsFilename.equals("")) {
@@ -108,6 +114,16 @@ public class Fractale {
 
         try {
             gen.fill().render("gen/fractal.png");
+            if (openFile) {
+                File file = new File("gen/fractal.png");
+                if(!Desktop.isDesktopSupported()) {
+                    System.out.println("not supported");
+                    return;
+                }
+                Desktop desktop = Desktop.getDesktop();
+                if(file.exists())
+                    desktop.open(file);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
