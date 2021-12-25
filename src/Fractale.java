@@ -1,3 +1,4 @@
+import fractals.FractalBuilder;
 import fractals.FractalGenerator;
 import fractals.JuliaSet;
 import fractals.MandelbrotSet;
@@ -27,9 +28,9 @@ public class Fractale {
     public static boolean openFile = true;
 
     public static void main(String[] args) {
-        Controler c = new Controler();
-        c.lancement();
-/*
+//        Controler c = new Controler();
+//        c.lancement();
+
         CLIArgsParser cliArgsParser = new CLIArgsParser(List.of(
                 new CLIArgsParser.Option("-c", "--complex", true),
                 new CLIArgsParser.Option("-s", "--size", 750),
@@ -45,7 +46,7 @@ public class Fractale {
         cliArgsParser.parse(args);
         LinkedHashMap<String, CLIArgsParser.Option> options = cliArgsParser.getProvidedOptions();
 
-        Complex c = (Complex) options.get("-c").getValue();
+        Complex comp = (Complex) options.get("-c").getValue();
         int size = (int) options.get("-s").getValue();
         double framesize = (double) options.get("-f").getValue();
         double minBrightness = (double) options.get("-b").getValue();
@@ -58,21 +59,17 @@ public class Fractale {
 
         FractalGenerator gen;
         if (propsFilename.equals("")) {
+            FractalBuilder fractalBuilder = new FractalBuilder(framesize, size).minBrightness(minBrightness).colorRange(colorRange).horoffset(horoffset).veroffset(veroffset);
             if (type.equals("mandelbrot")) {
                 gen = new MandelbrotSet(
-                        (Complex z, Complex comp) -> comp.add(z.pow(2)),
-                        framesize,
-                        size,
-                        colorRange
+                        fractalBuilder,
+                        (Complex z, Complex complex) -> complex.add(z.pow(2))
                 );
             } else {
                 gen = new JuliaSet(
-                        (Complex z) -> c.add(z.pow(2)),
-                        c,
-                        framesize,
-                        size,
-                        colorRange,
-                        minBrightness
+                        fractalBuilder,
+                        (Complex z) -> comp.add(z.pow(2)),
+                        comp
                 );
             }
         } else {
@@ -82,30 +79,27 @@ public class Fractale {
                 properties.load(fileReader);
                 fileReader.close();
                 Complex complex = Complex.parse(properties.getProperty(
-                    "complex",
-                    "0.285+0.5i"
+                    "complex"
                 ));
                 if (properties.getProperty("type", "").equals("mandelbrot")) {
                     gen = new MandelbrotSet(
-                            (Complex z, Complex comp) -> comp.add(z.pow(2)),
-                            properties
+                            properties,
+                            (Complex z, Complex complex1) -> complex1.add(z.pow(2))
                     );
                 } else {
                     gen = new JuliaSet(
+                            properties,
                             (Complex z) -> complex.add(z.pow(2)),
-                            complex,
-                            properties
+                            complex
                     );
                 }
             } catch (Exception e) {
+                FractalBuilder fractalBuilder = new FractalBuilder(framesize, size).veroffset(veroffset).horoffset(horoffset).colorRange(colorRange).minBrightness(minBrightness);
                 e.printStackTrace();
                 gen = new JuliaSet(
-                        (Complex z) -> c.add(z.pow(2)),
-                        c,
-                        framesize,
-                        size,
-                        colorRange,
-                        minBrightness
+                        fractalBuilder,
+                        (Complex z) -> comp.add(z.pow(2)),
+                        comp
                 );
             }
         }
@@ -114,20 +108,10 @@ public class Fractale {
         gen.setVeroffset(veroffset);
 
         try {
-            gen.fill().render("gen/fractal.png");
-            if (openFile) {
-                File file = new File("gen/fractal.png");
-                if(!Desktop.isDesktopSupported()) {
-                    System.out.println("not supported");
-                    return;
-                }
-                Desktop desktop = Desktop.getDesktop();
-                if(file.exists())
-                    desktop.open(file);
-            }
+            gen.fill().save("gen/fractal.png", openFile);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
 
     }
 }

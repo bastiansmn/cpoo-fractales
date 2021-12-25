@@ -1,5 +1,7 @@
 package utils.complex;
 
+import java.util.Arrays;
+
 public final class Complex {
 
     public static final Complex I = new Complex(0, 1);
@@ -102,7 +104,10 @@ public final class Complex {
 
     public static Complex parse(String s) {
         String[] parts = s.split("\\+");
+        if (parts.length == 1)
+            parts = s.split("-");
         double re = Double.parseDouble(parts[0]);
+        System.out.println(Arrays.toString(parts));
         if (!parts[1].contains("i"))
             throw new IllegalArgumentException(String.format("Number %s is not a valid Complex number.", s));
         double im = Double.parseDouble(parts[1].replace("i", ""));

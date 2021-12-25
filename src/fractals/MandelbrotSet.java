@@ -10,19 +10,12 @@ public final class MandelbrotSet extends FractalGenerator {
 
     private ComplexBiFunction function;
 
-    // Default constructor, using super, can't be called externally
-    private MandelbrotSet(double framesize, int size, Interval colorRange) {
-        super(framesize, size, colorRange, .5);
-    }
-
-    public MandelbrotSet(ComplexBiFunction function, double framesize, int size, Interval colorRange) {
-        this(framesize, size, colorRange);
+    public MandelbrotSet(FractalBuilder fractalBuilder, ComplexBiFunction function) {
+        super(fractalBuilder);
         this.function = function;
     }
 
-    // TODO : optionnal args constructors
-
-    public MandelbrotSet(ComplexBiFunction function, Properties properties) {
+    public MandelbrotSet(Properties properties, ComplexBiFunction function) {
         super(properties);
         this.function = function;
     }
