@@ -19,11 +19,11 @@ public class Fenetre extends JFrame {
         JPanel panel_fond = new JPanel(new GridLayout(1, 2));
         setContentPane(panel_fond);
 
-        JPanel boutons = new JPanel(new GridLayout(14, 1));
+        JPanel boutons = new JPanel(new GridLayout(15, 1));
         getContentPane().add(boutons);
 
-        JCheckBox is_julia= new JCheckBox("Julia");
-        boutons.add(is_julia);
+        JCheckBox is_mandelbrot= new JCheckBox("Mandelbrot");
+        boutons.add(is_mandelbrot);
 
         JLabel text_complex = new JLabel();
         text_complex.setText("Nombre complexe ( si julia )");
@@ -36,10 +36,10 @@ public class Fenetre extends JFrame {
         boutons.add(nb_complex);
 
 
-        JLabel zoom = new JLabel();
-        zoom.setText("Zoom");
-        zoom.setFont(new Font ("Arial", Font.BOLD, 14));
-        boutons.add(zoom);
+        JLabel text_zoom = new JLabel();
+        text_zoom.setText("Zoom");
+        text_zoom.setFont(new Font ("Arial", Font.BOLD, 14));
+        boutons.add(text_zoom);
 
         JTextField nb_zoom = new JTextField();
         nb_zoom.setColumns(10);
@@ -56,7 +56,7 @@ public class Fenetre extends JFrame {
         boutons.add(nb_size);
 
         JLabel text_luminosity = new JLabel();
-        text_luminosity.setText("Nombre complexe ( si julia )");
+        text_luminosity.setText("Luminosité minimale");
         text_luminosity.setFont(new Font ("Arial", Font.BOLD, 14));
         boutons.add(text_luminosity);
 
@@ -101,15 +101,34 @@ public class Fenetre extends JFrame {
         genere.addActionListener(event -> {
             String complexe = text_complex.getText();
             c.set_complexe(complexe);
-            
+            String zoom = text_zoom.getText();
+            c.set_zoom(zoom);
+            String size = text_size.getText();
+            c.set_size(size);
+            String luminosity = text_luminosity.getText();
+            c.set_luminosity(luminosity);
+            if (c.get_is_correct()){
+                if(is_mandelbrot.isSelected()){
+
+                }
+
+            }else {
+                JLabel error = new JLabel();
+                error.setText("Un des champs n'est pas du bon type");
+                error.setFont(new Font ("Arial", Font.BOLD, 20));
+                error.setForeground(Color.RED);
+                boutons.add(error);
+                repaint();
+                setVisible(true);
+            }
         });
+    }
 
 
+    public void fractale() {
         JPanel generation_fractale = new JPanel();
         getContentPane().add(generation_fractale);
 
-
-
-        }
+    }
 
 }
