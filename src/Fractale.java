@@ -31,7 +31,9 @@ public class Fractale {
                 new CLIArgsParser.Option("-b", "--minBrightness", 0.3),
                 new CLIArgsParser.Option("-r", "--colorRange", new Interval(0, 360)),
                 new CLIArgsParser.Option("-p", "--properties", ""),
-                new CLIArgsParser.Option("-t", "--type", "julia")
+                new CLIArgsParser.Option("-t", "--type", "julia"),
+                new CLIArgsParser.Option("-v", "--veroffset", .0),
+                new CLIArgsParser.Option("-h", "--horoffset", .0)
         ));
         cliArgsParser.parse(args);
         LinkedHashMap<String, CLIArgsParser.Option> options = cliArgsParser.getProvidedOptions();
@@ -43,7 +45,8 @@ public class Fractale {
         Interval colorRange = (Interval) options.get("-r").getValue();
         String propsFilename = (String) options.get("-p").getValue();
         String type = (String) options.get("-t").getValue();
-
+        double horoffset = (double) options.get("-h").getValue();
+        double veroffset = - (double) options.get("-v").getValue();
 
         FractalGenerator gen;
         if (propsFilename.equals("")) {
@@ -99,6 +102,9 @@ public class Fractale {
                 );
             }
         }
+
+        gen.setHoroffset(horoffset);
+        gen.setVeroffset(veroffset);
 
         try {
             gen.fill().render("gen/fractal.png");
