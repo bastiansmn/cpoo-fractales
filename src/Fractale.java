@@ -27,7 +27,9 @@ public class Fractale {
     public static boolean openFile = true;
 
     public static void main(String[] args) {
-
+        Controler c = new Controler();
+        c.lancement();
+/*
         CLIArgsParser cliArgsParser = new CLIArgsParser(List.of(
                 new CLIArgsParser.Option("-c", "--complex", true),
                 new CLIArgsParser.Option("-s", "--size", 750),
@@ -125,7 +127,7 @@ public class Fractale {
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 }
