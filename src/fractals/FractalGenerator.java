@@ -48,7 +48,7 @@ public abstract class FractalGenerator {
         );
         this.minBrightness = Math.min(1, Math.max(0, Double.parseDouble(properties.getProperty("minBrightness", "0.5"))));
         this.horoffset = Double.parseDouble(properties.getProperty("horoffset", "0"));
-        this.veroffset = -Double.parseDouble(properties.getProperty("veroffset", "0"));
+        this.veroffset = Double.parseDouble(properties.getProperty("veroffset", "0"));
     }
 
     protected abstract int divergenceIndex(Complex z0);
@@ -136,7 +136,7 @@ public abstract class FractalGenerator {
     private void fillFractalForPixel(int i, int j) {
         double h = framesize / (this.size);
         double startX =  -(framesize / 2) + horoffset;
-        double startY =  (framesize / 2) - veroffset;
+        double startY =  (framesize / 2) + veroffset;
 
         int ind = divergenceIndex(
                 Complex.of(startX + j*h, startY + (-i)*h)

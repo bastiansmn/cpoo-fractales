@@ -51,7 +51,7 @@ public class Fractale {
         String propsFilename = (String) options.get("-p").getValue();
         String type = (String) options.get("-t").getValue();
         double horoffset = (double) options.get("-h").getValue();
-        double veroffset = - (double) options.get("-v").getValue();
+        double veroffset = (double) options.get("-v").getValue();
         openFile = options.get("-o").getValue().equals("true");
 
         FractalGenerator gen;
@@ -64,7 +64,6 @@ public class Fractale {
                         colorRange
                 );
             } else {
-                System.out.println(c);
                 gen = new JuliaSet(
                         (Complex z) -> c.add(z.pow(2)),
                         c,
