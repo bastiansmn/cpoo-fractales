@@ -6,9 +6,9 @@ import utils.Interval;
 
 import java.util.Properties;
 
-public class JuliaSet extends FractalGenerator{
+public final class JuliaSet extends FractalGenerator{
 
-    private ComplexFunction function;
+    private final ComplexFunction function;
     private final Complex c;
 
     public JuliaSet(ComplexFunction function, Complex c, double framesize, int size, Interval colorRange, double minBrightness) {

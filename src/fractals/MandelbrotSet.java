@@ -6,7 +6,7 @@ import utils.Interval;
 
 import java.util.Properties;
 
-public class MandelbrotSet extends FractalGenerator {
+public final class MandelbrotSet extends FractalGenerator {
 
     private ComplexBiFunction function;
 
