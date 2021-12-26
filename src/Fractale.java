@@ -28,10 +28,10 @@ public class Fractale {
     public static boolean openFile = true;
 
     public static void main(String[] args) {
-//        Controler c = new Controler();
-//        c.lancement();
+       Controler c = new Controler();
+       c.lancement();
 
-        CLIArgsParser cliArgsParser = new CLIArgsParser(List.of(
+      /*  CLIArgsParser cliArgsParser = new CLIArgsParser(List.of(
                 new CLIArgsParser.Option("-c", "--complex", true),
                 new CLIArgsParser.Option("-s", "--size", 750),
                 new CLIArgsParser.Option("-f", "--framesize", 2.5),
@@ -111,7 +111,7 @@ public class Fractale {
             gen.fill().save("gen/fractal.png", openFile);
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
 
     }
 }
