@@ -15,6 +15,8 @@ public class Controler {
     private double zoom;
     private int size;
     private double minBrightness;
+    private double horoffset;
+    private double veroffset;
     private boolean is_correct = true;
 
     Controler() {
@@ -77,10 +79,26 @@ public class Controler {
         }
     }
 
+    public void set_horizontal(String s){
+        try {
+            horoffset = Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            is_correct = false;
+        }
+    }
+
+    public void set_vertical(String s){
+        try {
+            veroffset = Double.parseDouble(s);
+        } catch (NumberFormatException e) {
+            is_correct = false;
+        }
+    }
+
     public FractalGenerator gen_fractale_julia() {
         Interval colorRange = new Interval(intervalle_1, intervalle_2);
         FractalGenerator gen;
-        FractalBuilder fractalBuilder = new FractalBuilder(zoom, 500);
+        FractalBuilder fractalBuilder = new FractalBuilder(zoom, size);
         gen = new JuliaSet(
                 fractalBuilder,
                 (Complex z) -> complexe.add(z.pow(2)),
@@ -92,7 +110,7 @@ public class Controler {
     public FractalGenerator gen_fractale_mandelbrot() {
         Interval colorRange = new Interval(intervalle_1, intervalle_2);
         FractalGenerator gen;
-        FractalBuilder fractalBuilder = new FractalBuilder(zoom, 500);
+        FractalBuilder fractalBuilder = new FractalBuilder(zoom, size);
         gen = new MandelbrotSet(
                 fractalBuilder,
                 (Complex z, Complex comp) -> comp.add(z.pow(2))

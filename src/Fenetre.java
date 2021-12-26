@@ -8,6 +8,7 @@ import javax.swing.*;
 public class Fenetre extends JFrame {
     Controler c;
     BufferedImage fractale;
+    FractalGenerator gen;
     public Fenetre (Controler control) {
         c = control;
         init();
@@ -24,14 +25,29 @@ public class Fenetre extends JFrame {
         JPanel panel_fond = new JPanel(new GridLayout(1, 2));
         setContentPane(panel_fond);
 
-        JPanel boutons = new JPanel(new GridLayout(17, 1));
+        JPanel boutons = new JPanel(new GridLayout(18, 1));
         getContentPane().add(boutons);
 
         JCheckBox is_mandelbrot= new JCheckBox("Mandelbrot");
         boutons.add(is_mandelbrot);
 
+        JLabel defaut_complex = new JLabel();
+        defaut_complex.setText("Nombres complexe de référence");
+        defaut_complex.setFont(new Font ("Arial", Font.BOLD, 14));
+        boutons.add(defaut_complex);
+
+        String[] valeurs = {"0.3+i0.5","0.285+i0.01","0.38088+i0.9754633","0.285+i0.013","-1.476+i0.0",
+                "-0.7269+i0.1889","-1.417022285618+i0.0" , "0.8+i0.156", "0.4+i0.6"};
+        JList defaut = new JList(valeurs);
+        defaut.setVisibleRowCount(2);
+        defaut.setSelectionMode(0);
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setViewportView(defaut);
+        defaut.setLayoutOrientation(JList.VERTICAL);
+        boutons.add(scrollPane);
+
         JLabel text_complex = new JLabel();
-        text_complex.setText("Nombre complexe ( si julia )");
+        text_complex.setText("Nombre complexe personnalisé ( si julia )");
         text_complex.setFont(new Font ("Arial", Font.BOLD, 14));
         boutons.add(text_complex);
 
@@ -40,15 +56,32 @@ public class Fenetre extends JFrame {
         nb_complex.setColumns(10);
         boutons.add(nb_complex);
 
+        JPanel param_zoom = new JPanel(new GridLayout(2, 3));
+        boutons.add(param_zoom);
 
         JLabel text_zoom = new JLabel();
         text_zoom.setText("Zoom");
         text_zoom.setFont(new Font ("Arial", Font.BOLD, 14));
-        boutons.add(text_zoom);
+        param_zoom.add(text_zoom);
+
+        JLabel param_horizontal= new JLabel();
+        param_horizontal.setText("Deplacement Horizontal");
+        param_horizontal.setFont(new Font ("Arial", Font.BOLD, 9));
+        param_zoom.add(param_horizontal);
+
+        JLabel param_vertical = new JLabel();
+        param_vertical.setText("Deplacement Vertical");
+        param_vertical.setFont(new Font ("Arial", Font.BOLD, 9));
+        param_zoom.add(param_vertical);
 
         JTextField nb_zoom = new JTextField();
-        nb_zoom.setColumns(10);
-        boutons.add(nb_zoom);
+        param_zoom.add(nb_zoom);
+
+        JTextField deplacement_horizontal = new JTextField();
+        param_zoom.add(deplacement_horizontal);
+
+        JTextField deplacement_vertical = new JTextField();
+        param_zoom.add(deplacement_vertical);
 
 
         JLabel text_size = new JLabel();
@@ -116,15 +149,13 @@ public class Fenetre extends JFrame {
         save_image.addActionListener(event -> {
             if ((is_mandelbrot.isSelected())) {
                 try {
-                    FractalGenerator gen = c.gen_fractale_mandelbrot();
-                    gen.fill().save("gen/fractal.png", false);
+                    gen.fill().save("gen/fractal.png", true);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }else{
                 try {
-                    FractalGenerator gen = c.gen_fractale_julia();
-                    gen.fill().save("gen/fractal.png", false);
+                    gen.fill().save("gen/fractal.png", true);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -139,7 +170,12 @@ public class Fenetre extends JFrame {
             error.setVisible(false);
             c.set_is_correct(true);
             if(!(is_mandelbrot.isSelected())) {
-                String complexe = nb_complex.getText();
+                String complexe="";
+                if(nb_complex.getText().equals("")){
+                    complexe = valeurs[defaut.getSelectedIndex()];
+                }else{
+                    complexe = nb_complex.getText();
+                }
                 c.set_complexe(complexe);
             }
             String zoom = nb_zoom.getText();
@@ -148,13 +184,19 @@ public class Fenetre extends JFrame {
             c.set_size(size);
             String luminosity = nb_luminosity.getText();
             c.set_luminosity(luminosity);
+            String horizontal = deplacement_horizontal.getText();
+            c.set_horizontal(horizontal);
+            String vertical = deplacement_vertical.getText();
+            c.set_vertical(vertical);
             if (c.get_is_correct()) {
                 if (is_mandelbrot.isSelected()) {
-                    fractale = c.gen_fractale_mandelbrot().getCanvas();
+                    gen = c.gen_fractale_mandelbrot();
+                    fractale = gen.getCanvas();
                     generation_fractale.updateImage(fractale);
                     save_image.setVisible(true);
                 } else {
-                    fractale = c.gen_fractale_julia().getCanvas();
+                    gen = c.gen_fractale_mandelbrot();
+                    fractale = gen.getCanvas();
                     generation_fractale.updateImage(fractale);
                     save_image.setVisible(true);
                 }
