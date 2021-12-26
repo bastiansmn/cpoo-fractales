@@ -51,7 +51,38 @@ Ces classes utilisent des patrons monteurs pour instancier les différents attri
 ## 2) Utilisation des Threads
 Nous avons implémenté 2 façons légèrement différentes d'utiliser les Threads. Ces 2 façons s'appuient sur des ForksJoinPool. La première consiste à générer l'image par sous carrés (un carré par thread) et l'autre de générer l'image par groupe de lignes (un groupe par thread).
 Voici une petite étude de l'impact des threads :
+```
+- Version avec Threads :
+Les threads rendent des sous carrés de taille (p) différentes :
+1) Pour une image de taille 500x500 avec :
+  - p=100 (sous carrés de taille 100x100) : 227ms | 154ms | 169ms | 153ms | 166ms | 151ms
+  - p=10 : 828ms | 627ms | 486ms | 559ms ... 
+  - p=250 : 100ms | 109ms | 105ms | 110ms 
+  - p=300 : 101ms | ...
+Donc plus p est petit, moins c'est bien, et p à l'air d'être idéal pour p=size/2
 
+2) Pour 1000x1000 avec :
+  - p=100 : 294ms | 308ms | 275ms | 310ms | 295ms
+  - p=10 : 1174ms | 1781ms | ...
+  - p=250 : 265ms | 246ms | 271ms | 298ms | 289ms | ...
+  - p=500 : 236ms | 277ms | 227ms | 255ms | 267ms
+  - p=750 : 280ms | 293ms | ...
+p=250 et p=500 se valent, on a l'impression qu'il faudrait viser une division de l'image en 4.
+
+3) Pour 2000x2000 avec :
+  - p=1000 : 677ms | 742ms | ...
+  - p=500 : 693ms | 584ms | 697ms
+Et pour p<250 on sent une grosse baisse de performance.
+
+On va prendre p=size/2, car dans tous les cas c'était le plus performant.
+
+- Version sans threads :
+1) Pour 500x500 : 127ms | 123ms | 124ms | 132ms
+2) Pour 1000x1000 : 334ms | 353ms | 362ms | 334ms
+3) Pour 2000x2000 : 1133ms | 1148ms | 1144ms 
+
+Il est clair que la version avec Thread diminue grandement le temps passé, notamment pour les images de résolution élevée
+```
 
 ## 3) Autres choix 
 De plus, pour apporter plus de flexibilité à la CLI, nous hésitions à utiliser `commons-cli` (donc d'ajouter Maven) ou de créer notre propre gestionnaire d'arguments en ligne de commande. Ainsi, la classe CLIArgsParser gère les arguments sans être obligé de les placer dans un ordre spécifique, et on peut préciser simplement qu'une valeur est required, ...
