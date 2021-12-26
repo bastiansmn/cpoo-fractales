@@ -83,14 +83,7 @@ On va prendre p=size/2, car dans tous les cas c'était le plus performant.
 
 Il est clair que la version avec Thread diminue grandement le temps passé, notamment pour les images de résolution élevée
 ```
+Note : Ces calculs ont été réalisés sur un ordinateur portable AMD Ryzen7 4700U **sans être branché**. Il est important de le préciser car les performances multicœurs sont largement supérieures avec un PC sous secteur.
 
 ## 3) Autres choix 
 De plus, pour apporter plus de flexibilité à la CLI, nous hésitions à utiliser `commons-cli` (donc d'ajouter Maven) ou de créer notre propre gestionnaire d'arguments en ligne de commande. Ainsi, la classe CLIArgsParser gère les arguments sans être obligé de les placer dans un ordre spécifique, et on peut préciser simplement qu'une valeur est required, ...
-
-
-# Fonctionnalités :
-
-- Choisir f(z), c, zoom, ...
-- Créer des ensembles connus (Mandelbrot, Julia, ...)
-- Créer des classes qui lancent les ensemble avec les paramètres donnés
-- Choisir le code couleur (couleur hors bornes/dans l'ensemble)
