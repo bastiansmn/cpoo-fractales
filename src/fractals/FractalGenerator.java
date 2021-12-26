@@ -35,6 +35,8 @@ public abstract class FractalGenerator {
         this.framesize = fractalBuilder.getFramesize();
         this.size = fractalBuilder.getSize();
         this.colorRange = fractalBuilder.getColorRange();
+        this.veroffset = fractalBuilder.getVeroffset();
+        this.horoffset = fractalBuilder.getHoroffset();
         this.minBrightness = fractalBuilder.getMinBrightness();
     }
 

@@ -59,53 +59,50 @@ public class Fractale {
 
         FractalGenerator gen;
         if (propsFilename.equals("")) {
-        FractalBuilder fractalBuilder = new FractalBuilder(framesize, size).minBrightness(minBrightness).colorRange(colorRange).horoffset(horoffset).veroffset(veroffset);
-        if (type.equals("mandelbrot")) {
-            gen = new MandelbrotSet(
-                    fractalBuilder,
-                    (Complex z, Complex complex) -> complex.add(z.pow(2))
-            );
-        } else {
-            gen = new JuliaSet(
-                    fractalBuilder,
-                    (Complex z) -> comp.add(z.pow(2)),
-                    comp
-            );
-        }
-        } else {
-        Properties properties = new Properties();
-        try {
-            FileReader fileReader = new FileReader(propsFilename);
-            properties.load(fileReader);
-            fileReader.close();
-            Complex complex = Complex.parse(properties.getProperty(
-                "complex"
-            ));
-            if (properties.getProperty("type", "").equals("mandelbrot")) {
+            FractalBuilder fractalBuilder = new FractalBuilder(framesize, size).minBrightness(minBrightness).colorRange(colorRange).horoffset(horoffset).veroffset(veroffset);
+            if (type.equals("mandelbrot")) {
                 gen = new MandelbrotSet(
-                        properties,
-                        (Complex z, Complex complex1) -> complex1.add(z.pow(2))
+                        fractalBuilder,
+                        (Complex z, Complex complex) -> complex.add(z.pow(2))
                 );
             } else {
                 gen = new JuliaSet(
-                        properties,
-                        (Complex z) -> complex.add(z.pow(2)),
-                        complex
+                        fractalBuilder,
+                        (Complex z) -> comp.add(z.pow(2)),
+                        comp
                 );
             }
-        } catch (Exception e) {
-            FractalBuilder fractalBuilder = new FractalBuilder(framesize, size).veroffset(veroffset).horoffset(horoffset).colorRange(colorRange).minBrightness(minBrightness);
-            e.printStackTrace();
-            gen = new JuliaSet(
-                    fractalBuilder,
-                    (Complex z) -> comp.add(z.pow(2)),
-                    comp
-            );
+        } else {
+            Properties properties = new Properties();
+            try {
+                FileReader fileReader = new FileReader(propsFilename);
+                properties.load(fileReader);
+                fileReader.close();
+                Complex complex = Complex.parse(properties.getProperty(
+                    "complex"
+                ));
+                if (properties.getProperty("type", "").equals("mandelbrot")) {
+                    gen = new MandelbrotSet(
+                            properties,
+                            (Complex z, Complex complex1) -> complex1.add(z.pow(2))
+                    );
+                } else {
+                    gen = new JuliaSet(
+                            properties,
+                            (Complex z) -> complex.add(z.pow(2)),
+                            complex
+                    );
+                }
+            } catch (Exception e) {
+                FractalBuilder fractalBuilder = new FractalBuilder(framesize, size).veroffset(veroffset).horoffset(horoffset).colorRange(colorRange).minBrightness(minBrightness);
+                e.printStackTrace();
+                gen = new JuliaSet(
+                        fractalBuilder,
+                        (Complex z) -> comp.add(z.pow(2)),
+                        comp
+                );
+            }
         }
-        }
-
-        gen.setHoroffset(horoffset);
-        gen.setVeroffset(veroffset);
 
         try {
             gen.fill().save("gen/fractal.png", openFile);
