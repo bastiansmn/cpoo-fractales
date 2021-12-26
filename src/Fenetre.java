@@ -74,13 +74,13 @@ public class Fenetre extends JFrame {
         param_vertical.setFont(new Font ("Arial", Font.BOLD, 9));
         param_zoom.add(param_vertical);
 
-        JTextField nb_zoom = new JTextField();
+        JTextField nb_zoom = new JTextField("2.5");
         param_zoom.add(nb_zoom);
 
-        JTextField deplacement_horizontal = new JTextField();
+        JTextField deplacement_horizontal = new JTextField("0.0");
         param_zoom.add(deplacement_horizontal);
 
-        JTextField deplacement_vertical = new JTextField();
+        JTextField deplacement_vertical = new JTextField("0.0");
         param_zoom.add(deplacement_vertical);
 
 
@@ -89,7 +89,7 @@ public class Fenetre extends JFrame {
         text_size.setFont(new Font ("Arial", Font.BOLD, 14));
         boutons.add(text_size);
 
-        JTextField nb_size = new JTextField();
+        JTextField nb_size = new JTextField("500");
         nb_size.setColumns(10);
         boutons.add(nb_size);
 
@@ -99,7 +99,7 @@ public class Fenetre extends JFrame {
         boutons.add(text_luminosity);
 
 
-        JTextField nb_luminosity = new JTextField();
+        JTextField nb_luminosity = new JTextField("0.3");
         nb_luminosity.setColumns(10);
         boutons.add(nb_luminosity);
 
@@ -195,7 +195,7 @@ public class Fenetre extends JFrame {
                     generation_fractale.updateImage(fractale);
                     save_image.setVisible(true);
                 } else {
-                    gen = c.gen_fractale_mandelbrot();
+                    gen = c.gen_fractale_julia();
                     fractale = gen.getCanvas();
                     generation_fractale.updateImage(fractale);
                     save_image.setVisible(true);
