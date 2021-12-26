@@ -33,21 +33,21 @@ public class Controler {
         affichage.setVisible(true);
     }
 
-    public void set_intervalle_1(Color color) {
+    public void setIntervalle1(Color color) {
         float[] comp = new float[3];
         Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), comp);
         comp[0] *= 360;
         intervalle_1 = (int) comp[0];
     }
 
-    public void set_intervalle_2(Color color) {
+    public void setIntervalle2(Color color) {
         float[] comp = new float[3];
         Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), comp);
         comp[0] *= 360;
         intervalle_2 = (int) comp[0];
     }
 
-    public void set_complexe(String s) {
+    public void setComplexe(String s) {
         try {
             complexe = Complex.parse(s);
         } catch (Exception e) {
@@ -55,7 +55,7 @@ public class Controler {
         }
     }
 
-    public void set_zoom(String s) {
+    public void setZoom(String s) {
         try {
             zoom = Double.parseDouble(s);
         } catch (NumberFormatException e) {
@@ -63,7 +63,7 @@ public class Controler {
         }
     }
 
-    public void set_size(String s) {
+    public void setSize(String s) {
         try {
             size = Integer.parseInt(s);
         } catch (NumberFormatException e) {
@@ -71,7 +71,7 @@ public class Controler {
         }
     }
 
-    public void set_luminosity(String s) {
+    public void setLuminosity(String s) {
         try {
             minBrightness = Double.parseDouble(s);
         } catch (NumberFormatException e) {
@@ -79,7 +79,7 @@ public class Controler {
         }
     }
 
-    public void set_horizontal(String s){
+    public void setHorizontal(String s){
         try {
             horoffset = Double.parseDouble(s);
         } catch (NumberFormatException e) {
@@ -87,7 +87,7 @@ public class Controler {
         }
     }
 
-    public void set_vertical(String s){
+    public void setVertical(String s){
         try {
             veroffset = Double.parseDouble(s);
         } catch (NumberFormatException e) {
@@ -95,7 +95,7 @@ public class Controler {
         }
     }
 
-    public FractalGenerator gen_fractale_julia() {
+    public FractalGenerator genFractaleJulia() {
         Interval colorRange = new Interval(intervalle_1, intervalle_2);
         FractalGenerator gen;
         FractalBuilder fractalBuilder = new FractalBuilder(zoom, size).minBrightness(minBrightness).colorRange(colorRange).horoffset(horoffset).veroffset(veroffset);
@@ -107,7 +107,7 @@ public class Controler {
         return gen.fill();
     }
 
-    public FractalGenerator gen_fractale_mandelbrot() {
+    public FractalGenerator genFractaleMandelbrot() {
         Interval colorRange = new Interval(intervalle_1, intervalle_2);
         FractalGenerator gen;
         FractalBuilder fractalBuilder = new FractalBuilder(zoom, size).minBrightness(minBrightness).colorRange(colorRange).horoffset(horoffset).veroffset(veroffset);
@@ -118,10 +118,10 @@ public class Controler {
         return gen.fill();
     }
 
-    public boolean get_is_correct() {
+    public boolean getIsCorrect() {
         return is_correct;
     }
-    public void set_is_correct(boolean b) {
+    public void setIsCorrect(boolean b) {
         is_correct = b;
     }
 }

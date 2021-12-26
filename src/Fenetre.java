@@ -116,7 +116,7 @@ public class Fenetre extends JFrame {
             JColorChooser color_chose = new JColorChooser();
             Color color1 = color_chose.showDialog(this,"Choix couleur 1", Color.red);
             if(color1 != null) {
-                c.set_intervalle_1(color1);
+                c.setIntervalle1(color1);
             }
         });
         color.add(color_1);
@@ -128,7 +128,7 @@ public class Fenetre extends JFrame {
             JColorChooser color_chose = new JColorChooser();
             Color color2 = color_chose.showDialog(this,"Choix couleur 2", Color.green);
             if(color2 != null) {
-                c.set_intervalle_2(color2);
+                c.setIntervalle2(color2);
             }
         });
         color.add(color_2);
@@ -172,7 +172,7 @@ public class Fenetre extends JFrame {
 
         genere.addActionListener(event -> {
             error.setVisible(false);
-            c.set_is_correct(true);
+            c.setIsCorrect(true);
             if(!(is_mandelbrot.isSelected())) {
                 String complexe="";
                 if(nb_complex.getText().equals("") && !(defaut.getSelectedIndex() == -1) ){
@@ -180,26 +180,26 @@ public class Fenetre extends JFrame {
                 }else{
                     complexe = nb_complex.getText();
                 }
-                c.set_complexe(complexe);
+                c.setComplexe(complexe);
             }
             String zoom = nb_zoom.getText();
-            c.set_zoom(zoom);
+            c.setZoom(zoom);
             String size = nb_size.getText();
-            c.set_size(size);
+            c.setSize(size);
             String luminosity = nb_luminosity.getText();
-            c.set_luminosity(luminosity);
+            c.setLuminosity(luminosity);
             String horizontal = deplacement_horizontal.getText();
-            c.set_horizontal(horizontal);
+            c.setHorizontal(horizontal);
             String vertical = deplacement_vertical.getText();
-            c.set_vertical(vertical);
-            if (c.get_is_correct()) {
+            c.setVertical(vertical);
+            if (c.getIsCorrect()) {
                 if (is_mandelbrot.isSelected()) {
-                    gen = c.gen_fractale_mandelbrot();
+                    gen = c.genFractaleMandelbrot();
                     fractale = gen.getCanvas();
                     generation_fractale.updateImage(fractale);
                     save_image.setVisible(true);
                 } else {
-                    gen = c.gen_fractale_julia();
+                    gen = c.genFractaleJulia();
                     fractale = gen.getCanvas();
                     generation_fractale.updateImage(fractale);
                     save_image.setVisible(true);
