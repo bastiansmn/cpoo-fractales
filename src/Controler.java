@@ -98,7 +98,7 @@ public class Controler {
     public FractalGenerator gen_fractale_julia() {
         Interval colorRange = new Interval(intervalle_1, intervalle_2);
         FractalGenerator gen;
-        FractalBuilder fractalBuilder = new FractalBuilder(zoom, size);
+        FractalBuilder fractalBuilder = new FractalBuilder(zoom, size).minBrightness(minBrightness).colorRange(colorRange).horoffset(horoffset).veroffset(veroffset);
         gen = new JuliaSet(
                 fractalBuilder,
                 (Complex z) -> complexe.add(z.pow(2)),
@@ -110,7 +110,7 @@ public class Controler {
     public FractalGenerator gen_fractale_mandelbrot() {
         Interval colorRange = new Interval(intervalle_1, intervalle_2);
         FractalGenerator gen;
-        FractalBuilder fractalBuilder = new FractalBuilder(zoom, size);
+        FractalBuilder fractalBuilder = new FractalBuilder(zoom, size).minBrightness(minBrightness).colorRange(colorRange).horoffset(horoffset).veroffset(veroffset);
         gen = new MandelbrotSet(
                 fractalBuilder,
                 (Complex z, Complex comp) -> comp.add(z.pow(2))

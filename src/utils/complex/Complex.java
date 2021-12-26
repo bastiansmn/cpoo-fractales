@@ -106,8 +106,9 @@ public final class Complex {
         String[] parts = s.split("\\+");
         if (parts.length == 1)
             parts = s.split("-");
+        if (parts[0].length() == 0)
+            parts = new String[]{("-" + parts[1]), ("-" + parts[2])};
         double re = Double.parseDouble(parts[0]);
-        System.out.println(Arrays.toString(parts));
         if (!parts[1].contains("i"))
             throw new IllegalArgumentException(String.format("Number %s is not a valid Complex number.", s));
         double im = Double.parseDouble(parts[1].replace("i", ""));
