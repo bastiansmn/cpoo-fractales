@@ -115,7 +115,9 @@ public class Fenetre extends JFrame {
         color_1.addActionListener(event -> {
             JColorChooser color_chose = new JColorChooser();
             Color color1 = color_chose.showDialog(this,"Choix couleur 1", Color.red);
-            c.set_intervalle_1(color1);
+            if(color1 != null) {
+                c.set_intervalle_1(color1);
+            }
         });
         color.add(color_1);
 
@@ -124,8 +126,10 @@ public class Fenetre extends JFrame {
         color_2.setFont(new Font ("Arial", Font.BOLD, 14));
         color_2.addActionListener(event -> {
             JColorChooser color_chose = new JColorChooser();
-            Color color2 = color_chose.showDialog(this,"Choix couleur 2", Color.red);
-            c.set_intervalle_2(color2);
+            Color color2 = color_chose.showDialog(this,"Choix couleur 2", Color.green);
+            if(color2 != null) {
+                c.set_intervalle_2(color2);
+            }
         });
         color.add(color_2);
 
@@ -171,7 +175,7 @@ public class Fenetre extends JFrame {
             c.set_is_correct(true);
             if(!(is_mandelbrot.isSelected())) {
                 String complexe="";
-                if(nb_complex.getText().equals("")){
+                if(nb_complex.getText().equals("") && !(defaut.getSelectedIndex() == -1) ){
                     complexe = valeurs[defaut.getSelectedIndex()];
                 }else{
                     complexe = nb_complex.getText();

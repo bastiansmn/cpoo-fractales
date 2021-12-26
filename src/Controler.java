@@ -9,8 +9,8 @@ import java.awt.image.BufferedImage;
 
 public class Controler {
     private static Fenetre affichage;
-    private int intervalle_1;
-    private int intervalle_2;
+    private int intervalle_1 = 0;
+    private int intervalle_2 = 121;
     private Complex complexe;
     private double zoom;
     private int size;
