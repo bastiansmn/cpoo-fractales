@@ -17,7 +17,7 @@ public class Fenetre extends JFrame {
 
     public void init() {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(800,600);
+        setSize(1000,500);
         setLocationRelativeTo(null);
         setResizable(false);
         setTitle("Fractales");
