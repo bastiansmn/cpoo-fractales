@@ -15,6 +15,8 @@ public class CLIArgsParser {
         private Object value;
         private final Object fallbackValue;
 
+        // TODO OptionBuilder
+
         public Option(String name, String alias, boolean required, Object fallbackValue) {
             this(name, alias, required, null, fallbackValue);
         }
@@ -182,15 +184,6 @@ public class CLIArgsParser {
 
     public LinkedHashMap<String, Option> getProvidedOptions() {
         return providedOptions;
-    }
-
-    public String getUsage() {
-        return """
-               Usage :
-                  ./Fractale -c=... <-s=...> <-f=2> <-b=0.2> <-r=[100; 360]>
-                  
-                  Where <...> is optional, [...] is a value you need to enter.
-               """;
     }
 
 }

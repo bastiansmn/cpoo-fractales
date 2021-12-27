@@ -1,7 +1,5 @@
 package utils.complex;
 
-import java.util.Arrays;
-
 public final class Complex {
 
     public static final Complex I = new Complex(0, 1);

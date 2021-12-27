@@ -5,8 +5,6 @@ import fractals.MandelbrotSet;
 import utils.*;
 import utils.complex.Complex;
 
-import java.awt.*;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.LinkedHashMap;
@@ -15,17 +13,17 @@ import java.util.Properties;
 
 public class Fractale {
 
-    private final static Complex c1 = Complex.of(.3, .5);
-    private final static Complex c2 = Complex.of(.285, .01);
-    private final static Complex c3 = Complex.of(.038088, .9754633);
-    private final static Complex c4 = Complex.of(.285, .013);
-    private final static Complex c5 = Complex.of(-1.476, .0);
-    private final static Complex c6 = Complex.of(-0.7269, 0.1889);
-    private final static Complex c7 = Complex.of(-1.417022285618, 0.0099534);
-    private final static Complex c8 = Complex.of(-.8, .156);
-    private final static Complex c9 = Complex.of(-.4, .6);
-
-    public static boolean openFile = true;
+    public final static Complex[] cval = {
+        Complex.of(.3, .5),
+        Complex.of(.285, .01),
+        Complex.of(.038088, .9754633),
+        Complex.of(.285, .013),
+        Complex.of(-1.476, .0),
+        Complex.of(-0.7269, 0.1889),
+        Complex.of(-1.417022285618, 0.0099534),
+        Complex.of(-.8, .156),
+        Complex.of(-.4, .6)
+    };
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -56,7 +54,7 @@ public class Fractale {
             String type = (String) options.get("-t").getValue();
             double horoffset = (double) options.get("-h").getValue();
             double veroffset = (double) options.get("-v").getValue();
-            openFile = options.get("-o").getValue().equals("true");
+            boolean openFile = options.get("-o").getValue().equals("true");
 
             FractalGenerator gen;
             if (propsFilename.equals("")) {

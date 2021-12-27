@@ -2,13 +2,12 @@ package fractals;
 
 import utils.complex.Complex;
 import utils.complex.ComplexBiFunction;
-import utils.Interval;
 
 import java.util.Properties;
 
 public final class MandelbrotSet extends FractalGenerator {
 
-    private ComplexBiFunction function;
+    private final ComplexBiFunction function;
 
     public MandelbrotSet(FractalBuilder fractalBuilder, ComplexBiFunction function) {
         super(fractalBuilder);

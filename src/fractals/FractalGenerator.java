@@ -20,8 +20,8 @@ public abstract class FractalGenerator {
 
     private final double framesize;
     private final int size;
-    private double horoffset = 0;
-    private double veroffset = 0;
+    private double horoffset;
+    private double veroffset;
     private final Interval colorRange;
 
     private int threadnum;

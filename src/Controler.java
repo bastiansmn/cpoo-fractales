@@ -5,7 +5,6 @@ import fractals.MandelbrotSet;
 import utils.*;
 import utils.complex.Complex;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Controler {
     private static Fenetre affichage;

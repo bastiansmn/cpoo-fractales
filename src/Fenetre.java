@@ -1,14 +1,18 @@
 import fractals.FractalGenerator;
+import utils.complex.Complex;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Arrays;
+
 import javax.swing.*;
 
 public class Fenetre extends JFrame {
-    Controler c;
-    BufferedImage fractale;
-    FractalGenerator gen;
+    private final Controler c;
+    private BufferedImage fractale;
+    private FractalGenerator gen;
+
     public Fenetre (Controler control) {
         c = control;
         init();
@@ -36,9 +40,8 @@ public class Fenetre extends JFrame {
         defaut_complex.setFont(new Font ("Arial", Font.BOLD, 14));
         boutons.add(defaut_complex);
 
-        String[] valeurs = {"0.3+i0.5","0.285+i0.01","0.38088+i0.9754633","0.285+i0.013","-1.476+i0.0",
-                "-0.7269+i0.1889","-1.417022285618+i0.0" , "0.8+i0.156", "0.4+i0.6"};
-        JList defaut = new JList(valeurs);
+        String[] valeurs = Arrays.stream(Fractale.cval).map(Complex::toString).toArray(String[]::new);
+        JList<String> defaut = new JList<>(valeurs);
         defaut.setVisibleRowCount(2);
         defaut.setSelectionMode(0);
         JScrollPane scrollPane = new JScrollPane();
@@ -151,18 +154,10 @@ public class Fenetre extends JFrame {
         boutons.add(save_image);
         save_image.setVisible(false);
         save_image.addActionListener(event -> {
-            if ((is_mandelbrot.isSelected())) {
-                try {
-                    gen.fill().save("gen/fractal.png", true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }else{
-                try {
-                    gen.fill().save("gen/fractal.png", true);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            try {
+                gen.save("gen/fractal.png", true);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         });
 
@@ -174,7 +169,7 @@ public class Fenetre extends JFrame {
             error.setVisible(false);
             c.setIsCorrect(true);
             if(!(is_mandelbrot.isSelected())) {
-                String complexe="";
+                String complexe;
                 if(nb_complex.getText().equals("") && !(defaut.getSelectedIndex() == -1) ){
                     complexe = valeurs[defaut.getSelectedIndex()];
                 }else{
@@ -215,7 +210,7 @@ public class Fenetre extends JFrame {
         });
     }
 
-    public class PanelFractale extends JPanel {
+    public static class PanelFractale extends JPanel {
 
         private BufferedImage image;
 

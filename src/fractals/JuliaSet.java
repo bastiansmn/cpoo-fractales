@@ -2,7 +2,6 @@ package fractals;
 
 import utils.complex.Complex;
 import utils.complex.ComplexFunction;
-import utils.Interval;
 
 import java.util.Properties;
 
