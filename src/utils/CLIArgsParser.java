@@ -4,6 +4,7 @@ import utils.complex.Complex;
 
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CLIArgsParser {
 
@@ -117,15 +118,15 @@ public class CLIArgsParser {
                 throw new IllegalArgumentException(String.format("Argument '%s | %s' is missing", o.getName(), o.getAlias()));
         });
         // Parsing only accepted options
-        List<String> strName = this.acceptedOptions.stream().map(Option::getName).toList();
-        List<String> strAlias = this.acceptedOptions.stream().map(Option::getAlias).toList();
+        List<String> strName = this.acceptedOptions.stream().map(Option::getName).collect(Collectors.toList());
+        List<String> strAlias = this.acceptedOptions.stream().map(Option::getAlias).collect(Collectors.toList());
         givenOptions.forEach((key, val) -> {
             if ( strName.contains(key) || strAlias.contains(key)) {
                 var value = tryParse(val);
                 assert value != null;
 
                 String finalKey = key;
-                List<Option> opt = this.acceptedOptions.stream().filter(o -> o.getAlias().equals(finalKey)).toList();
+                List<Option> opt = this.acceptedOptions.stream().filter(o -> o.getAlias().equals(finalKey)).collect(Collectors.toList());
                 if (opt.size() == 1)
                     key = opt.get(0).getName();
 
@@ -176,7 +177,7 @@ public class CLIArgsParser {
         return this.acceptedOptions
                 .stream()
                 .filter(Option::isRequired)
-                .toList();
+                .collect(Collectors.toList());
     }
 
     public LinkedHashMap<String, Option> getProvidedOptions() {
