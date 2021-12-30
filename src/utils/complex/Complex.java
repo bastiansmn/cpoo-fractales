@@ -102,6 +102,10 @@ public final class Complex {
 
     public static Complex parse(String s) {
         String[] parts = s.split("\\+");
+        if (parts.length == 1)
+            parts = s.split("-");
+        if (parts[0].length() == 0)
+            parts = new String[]{("-" + parts[1]), ("-" + parts[2])};
         double re = Double.parseDouble(parts[0]);
         if (!parts[1].contains("i"))
             throw new IllegalArgumentException(String.format("Number %s is not a valid Complex number.", s));

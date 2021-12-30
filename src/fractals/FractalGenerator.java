@@ -20,8 +20,8 @@ public abstract class FractalGenerator {
 
     private final double framesize;
     private final int size;
-    private double horoffset = 0;
-    private double veroffset = 0;
+    private double horoffset;
+    private double veroffset;
     private final Interval colorRange;
 
     private int threadnum;
@@ -30,12 +30,14 @@ public abstract class FractalGenerator {
     private final double minBrightness;
 
 
-    protected FractalGenerator(double framesize, int size, Interval colorRange, double minBrightness) {
-        this.canvas = new BufferedImage(size, size, BufferedImage.TYPE_INT_BGR);
-        this.framesize = framesize;
-        this.size = size;
-        this.colorRange = colorRange;
-        this.minBrightness = minBrightness;
+    protected FractalGenerator(FractalBuilder fractalBuilder) {
+        this.canvas = new BufferedImage(fractalBuilder.getSize(), fractalBuilder.getSize(), BufferedImage.TYPE_INT_BGR);
+        this.framesize = fractalBuilder.getFramesize();
+        this.size = fractalBuilder.getSize();
+        this.colorRange = fractalBuilder.getColorRange();
+        this.veroffset = fractalBuilder.getVeroffset();
+        this.horoffset = fractalBuilder.getHoroffset();
+        this.minBrightness = fractalBuilder.getMinBrightness();
     }
 
     protected FractalGenerator(Properties properties) {
@@ -171,9 +173,18 @@ public abstract class FractalGenerator {
         return (float) v;
     }
 
-    public void render(String filename) throws IOException {
+    public void save(String filename, boolean openFile) throws IOException {
         File f = new File(filename);
         ImageIO.write(canvas, "PNG", f);
+        if (openFile) {
+            if(!Desktop.isDesktopSupported()) {
+                System.out.println("not supported");
+                return;
+            }
+            Desktop desktop = Desktop.getDesktop();
+            if(f.exists())
+                desktop.open(f);
+        }
     }
 
     protected abstract String getInformations();

@@ -2,36 +2,21 @@ package fractals;
 
 import utils.complex.Complex;
 import utils.complex.ComplexFunction;
-import utils.Interval;
 
 import java.util.Properties;
 
-public class JuliaSet extends FractalGenerator{
+public final class JuliaSet extends FractalGenerator{
 
-    private ComplexFunction function;
+    private final ComplexFunction function;
     private final Complex c;
 
-    public JuliaSet(ComplexFunction function, Complex c, double framesize, int size, Interval colorRange, double minBrightness) {
-        super(framesize, size, colorRange, minBrightness);
+    public JuliaSet(FractalBuilder fractalBuilder, ComplexFunction function, Complex c) {
+        super(fractalBuilder);
         this.function = function;
         this.c = c;
     }
 
-    public JuliaSet(ComplexFunction function, Complex c,double framesize, int size, Interval colorRange) {
-        this(function, c, framesize, size, colorRange, .0);
-    }
-
-    public JuliaSet(ComplexFunction function, Complex c, double framesize, int size) {
-        this(function, c, framesize, size, new Interval(0, 360));
-    }
-
-    public JuliaSet(ComplexFunction function, Complex c, double framesize, int size, double minBrightness) {
-        this(function, c, framesize, size, new Interval(0, 360), minBrightness);
-    }
-
-    // TODO : optional args constructors
-
-    public JuliaSet(ComplexFunction function, Complex c, Properties properties) {
+    public JuliaSet(Properties properties, ComplexFunction function, Complex c) {
         super(properties);
         this.function = function;
         this.c = c;
