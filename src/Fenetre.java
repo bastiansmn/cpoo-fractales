@@ -26,19 +26,19 @@ public class Fenetre extends JFrame {
         setResizable(false);
         setTitle("Fractales");
 
-        JPanel panel_fond = new JPanel(new GridLayout(1, 2));
-        setContentPane(panel_fond);
+        JPanel panelFond = new JPanel(new GridLayout(1, 2));
+        setContentPane(panelFond);
 
         JPanel boutons = new JPanel(new GridLayout(18, 1));
         getContentPane().add(boutons);
 
-        JCheckBox is_mandelbrot= new JCheckBox("Mandelbrot");
-        boutons.add(is_mandelbrot);
+        JCheckBox isMandelbrot= new JCheckBox("Mandelbrot");
+        boutons.add(isMandelbrot);
 
-        JLabel defaut_complex = new JLabel();
-        defaut_complex.setText("Nombres complexe de référence");
-        defaut_complex.setFont(new Font ("Arial", Font.BOLD, 14));
-        boutons.add(defaut_complex);
+        JLabel defaultComplex = new JLabel();
+        defaultComplex.setText("Nombres complexe de référence");
+        defaultComplex.setFont(new Font ("Arial", Font.BOLD, 14));
+        boutons.add(defaultComplex);
 
         String[] valeurs = Arrays.stream(Fractale.cval).map(Complex::toString).toArray(String[]::new);
         JList<String> defaut = new JList<>(valeurs);
@@ -49,62 +49,62 @@ public class Fenetre extends JFrame {
         defaut.setLayoutOrientation(JList.VERTICAL);
         boutons.add(scrollPane);
 
-        JLabel text_complex = new JLabel();
-        text_complex.setText("Nombre complexe personnalisé ( si julia )");
-        text_complex.setFont(new Font ("Arial", Font.BOLD, 14));
-        boutons.add(text_complex);
+        JLabel textComplex = new JLabel();
+        textComplex.setText("Nombre complexe personnalisé ( si julia )");
+        textComplex.setFont(new Font ("Arial", Font.BOLD, 14));
+        boutons.add(textComplex);
 
 
-        JTextField nb_complex = new JTextField();
-        nb_complex.setColumns(10);
-        boutons.add(nb_complex);
+        JTextField nbComplex = new JTextField();
+        nbComplex.setColumns(10);
+        boutons.add(nbComplex);
 
-        JPanel param_zoom = new JPanel(new GridLayout(2, 3));
-        boutons.add(param_zoom);
+        JPanel paramZoom = new JPanel(new GridLayout(2, 3));
+        boutons.add(paramZoom);
 
-        JLabel text_zoom = new JLabel();
-        text_zoom.setText("Zoom");
-        text_zoom.setFont(new Font ("Arial", Font.BOLD, 14));
-        param_zoom.add(text_zoom);
+        JLabel textZoom = new JLabel();
+        textZoom.setText("Zoom");
+        textZoom.setFont(new Font ("Arial", Font.BOLD, 14));
+        paramZoom.add(textZoom);
 
-        JLabel param_horizontal= new JLabel();
-        param_horizontal.setText("Deplacement Horizontal");
-        param_horizontal.setFont(new Font ("Arial", Font.BOLD, 9));
-        param_zoom.add(param_horizontal);
+        JLabel paramHorizontal= new JLabel();
+        paramHorizontal.setText("Deplacement Horizontal");
+        paramHorizontal.setFont(new Font ("Arial", Font.BOLD, 9));
+        paramZoom.add(paramHorizontal);
 
-        JLabel param_vertical = new JLabel();
-        param_vertical.setText("Deplacement Vertical");
-        param_vertical.setFont(new Font ("Arial", Font.BOLD, 9));
-        param_zoom.add(param_vertical);
+        JLabel paramVertical = new JLabel();
+        paramVertical.setText("Deplacement Vertical");
+        paramVertical.setFont(new Font ("Arial", Font.BOLD, 9));
+        paramZoom.add(paramVertical);
 
-        JTextField nb_zoom = new JTextField("2.5");
-        param_zoom.add(nb_zoom);
+        JTextField nbZoom = new JTextField("2.5");
+        paramZoom.add(nbZoom);
 
-        JTextField deplacement_horizontal = new JTextField("0.0");
-        param_zoom.add(deplacement_horizontal);
+        JTextField deplacementHorizontal = new JTextField("0.0");
+        paramZoom.add(deplacementHorizontal);
 
-        JTextField deplacement_vertical = new JTextField("0.0");
-        param_zoom.add(deplacement_vertical);
-
-
-        JLabel text_size = new JLabel();
-        text_size.setText("Taille du fichier en cas de sauvegarde");
-        text_size.setFont(new Font ("Arial", Font.BOLD, 14));
-        boutons.add(text_size);
-
-        JTextField nb_size = new JTextField("500");
-        nb_size.setColumns(10);
-        boutons.add(nb_size);
-
-        JLabel text_luminosity = new JLabel();
-        text_luminosity.setText("Luminosité minimale");
-        text_luminosity.setFont(new Font ("Arial", Font.BOLD, 14));
-        boutons.add(text_luminosity);
+        JTextField deplacementVertical = new JTextField("0.0");
+        paramZoom.add(deplacementVertical);
 
 
-        JTextField nb_luminosity = new JTextField("0.3");
-        nb_luminosity.setColumns(10);
-        boutons.add(nb_luminosity);
+        JLabel textSize = new JLabel();
+        textSize.setText("Taille du fichier en cas de sauvegarde");
+        textSize.setFont(new Font ("Arial", Font.BOLD, 14));
+        boutons.add(textSize);
+
+        JTextField nbSize = new JTextField("500");
+        nbSize.setColumns(10);
+        boutons.add(nbSize);
+
+        JLabel textLuminosity = new JLabel();
+        textLuminosity.setText("Luminosité minimale");
+        textLuminosity.setFont(new Font ("Arial", Font.BOLD, 14));
+        boutons.add(textLuminosity);
+
+
+        JTextField nbLuminosity = new JTextField("0.3");
+        nbLuminosity.setColumns(10);
+        boutons.add(nbLuminosity);
 
         JLabel space = new JLabel();
         boutons.add(space);
@@ -112,29 +112,27 @@ public class Fenetre extends JFrame {
         JPanel color = new JPanel(new GridLayout(1,2));
         boutons.add(color);
 
-        JButton  color_1 = new JButton();
-        color_1.setText("Choix couleur 1");
-        color_1.setFont(new Font ("Arial", Font.BOLD, 14));
-        color_1.addActionListener(event -> {
-            JColorChooser color_chose = new JColorChooser();
-            Color color1 = color_chose.showDialog(this,"Choix couleur 1", Color.red);
+        JButton  color1 = new JButton();
+        color1.setText("Choix couleur 1");
+        color1.setFont(new Font ("Arial", Font.BOLD, 14));
+        color1.addActionListener(event -> {
+            Color _color1 = JColorChooser.showDialog(this,"Choix couleur 1", Color.red);
             if(color1 != null) {
-                c.setIntervalle1(color1);
+                c.setIntervalle1(_color1);
             }
         });
-        color.add(color_1);
+        color.add(color1);
 
-        JButton color_2 = new JButton();
-        color_2.setText("Choix couleur 2");
-        color_2.setFont(new Font ("Arial", Font.BOLD, 14));
-        color_2.addActionListener(event -> {
-            JColorChooser color_chose = new JColorChooser();
-            Color color2 = color_chose.showDialog(this,"Choix couleur 2", Color.green);
+        JButton color2 = new JButton();
+        color2.setText("Choix couleur 2");
+        color2.setFont(new Font ("Arial", Font.BOLD, 14));
+        color2.addActionListener(event -> {
+            Color _color2 = JColorChooser.showDialog(this,"Choix couleur 2", Color.green);
             if(color2 != null) {
-                c.setIntervalle2(color2);
+                c.setIntervalle2(_color2);
             }
         });
-        color.add(color_2);
+        color.add(color2);
 
         JLabel space2 = new JLabel();
         boutons.add(space2);
@@ -148,12 +146,12 @@ public class Fenetre extends JFrame {
         boutons.add(space3);
 
 
-        JButton save_image = new JButton();
-        save_image.setText("SAUVEGARDER");
-        save_image.setFont(new Font ("Arial", Font.BOLD, 14));
-        boutons.add(save_image);
-        save_image.setVisible(false);
-        save_image.addActionListener(event -> {
+        JButton saveImage = new JButton();
+        saveImage.setText("SAUVEGARDER");
+        saveImage.setFont(new Font ("Arial", Font.BOLD, 14));
+        boutons.add(saveImage);
+        saveImage.setVisible(false);
+        saveImage.addActionListener(event -> {
             try {
                 gen.save("gen/fractal.png", true);
             } catch (IOException e) {
@@ -162,42 +160,42 @@ public class Fenetre extends JFrame {
         });
 
         JLabel error = new JLabel();
-        PanelFractale generation_fractale = new PanelFractale();
-        getContentPane().add(generation_fractale);
+        PanelFractale generationFractale = new PanelFractale();
+        getContentPane().add(generationFractale);
 
         genere.addActionListener(event -> {
             error.setVisible(false);
             c.setIsCorrect(true);
-            if(!(is_mandelbrot.isSelected())) {
+            if(!(isMandelbrot.isSelected())) {
                 String complexe;
-                if(nb_complex.getText().equals("") && !(defaut.getSelectedIndex() == -1) ){
+                if(nbComplex.getText().equals("") && !(defaut.getSelectedIndex() == -1) ){
                     complexe = valeurs[defaut.getSelectedIndex()];
                 }else{
-                    complexe = nb_complex.getText();
+                    complexe = nbComplex.getText();
                 }
                 c.setComplexe(complexe);
             }
-            String zoom = nb_zoom.getText();
+            String zoom = nbZoom.getText();
             c.setZoom(zoom);
-            String size = nb_size.getText();
+            String size = nbSize.getText();
             c.setSize(size);
-            String luminosity = nb_luminosity.getText();
+            String luminosity = nbLuminosity.getText();
             c.setLuminosity(luminosity);
-            String horizontal = deplacement_horizontal.getText();
+            String horizontal = deplacementHorizontal.getText();
             c.setHorizontal(horizontal);
-            String vertical = deplacement_vertical.getText();
+            String vertical = deplacementVertical.getText();
             c.setVertical(vertical);
             if (c.getIsCorrect()) {
-                if (is_mandelbrot.isSelected()) {
+                if (isMandelbrot.isSelected()) {
                     gen = c.genFractaleMandelbrot();
                     fractale = gen.getCanvas();
-                    generation_fractale.updateImage(fractale);
-                    save_image.setVisible(true);
+                    generationFractale.updateImage(fractale);
+                    saveImage.setVisible(true);
                 } else {
                     gen = c.genFractaleJulia();
                     fractale = gen.getCanvas();
-                    generation_fractale.updateImage(fractale);
-                    save_image.setVisible(true);
+                    generationFractale.updateImage(fractale);
+                    saveImage.setVisible(true);
                 }
             }else{
                 error.setText("Un des champs n'est pas du bon type");
@@ -219,7 +217,7 @@ public class Fenetre extends JFrame {
         }
 
         public void updateImage(BufferedImage im){
-            image = im;
+            this.image = im;
             updateUI();
         }
 
